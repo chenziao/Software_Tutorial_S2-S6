@@ -1,0 +1,34 @@
+{load_file("nrngui.hoc")}
+{load_file("cell_template.hoc")}
+{load_file("graphic_library.hoc")}
+
+
+// main.hoc
+
+tstop = 1000
+v_init = -50
+objref CellA // declare neuron object
+objref syn[2]
+objref nc[2]
+CellA = new HCOcell() // build neuron from template
+// for stimulating it using current injection
+objref ccl
+//CellA.soma ccl = new IClamp(.5)
+//ccl.del = 50
+//ccl.dur = 900
+//ccl.amp = 3
+
+// for stimulating it using a synapse
+CellA.soma syn[0] = new inhsyn(.5) // build a synapse input into CellA
+syn[0].esyn = -80 // (mV) synaptic channels reversal potential
+syn[0].gmax = 40e-3 // (uS) synaptic channels maximum conductance
+
+objref nstim // the code below provides cellA with a spike train
+nstim=new NetStim(0.5)
+nstim.interval=1 // ms (mean) time between spikes
+nstim.number=5 //(average) number of spikes
+nstim.start=100 // ms (most likely) start time of first spike
+nstim.noise=0 // range 0 to 1. Fractional randomness.
+nc[0]=new NetCon(nstim,syn[0],0,0,1)
+
+allInOneBoxSingleHCOSingle("CellA", CellA, ccl, syn[0],nstim)

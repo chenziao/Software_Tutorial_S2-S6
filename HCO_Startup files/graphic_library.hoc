@@ -1,0 +1,792 @@
+/**********************************************************************
+How to Use This Graphic Library
+	0. dont change/delete/add anything here, except you are sure with your modification
+	1. copy it in the same folder as your main hoc file,
+		then include this in your main hoc file by using {load_file("graphic_library.hoc")}
+	2. Use Commands in your hoc file as:
+		Plot1V("CellA") -- plot only CellA.soma.v(.5)
+		Plot2V("CellA","CellB") -- plot both CellA.soma.v(.5) and CellA.soma.v(.5)
+		Plot1CaPool("CellA") -- plot CellA.soma.cai(.5)
+		Plot1CaPool("CellB") -- plot CellB.soma.cai(.5)
+***********************************************************************/
+{load_file("nrngui.hoc")}
+
+strdef tstr0, tstr1,tstr2,tstr3
+
+strdef MainBoxTitle
+MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project"
+SubVBoxNum = 3
+SubDeckNum = 2
+objref MainHBoxObj,SubVBoxObj[SubVBoxNum]
+objref SubDeckObj[SubDeckNum]
+
+proc Plot1V() {
+	sprint(tstr1,"%s.soma.v(.5)",$s1)
+	newPlot(0,tstop,-80,60)
+	graphItem.save_name("graphList[0].")
+	graphList[0].append(graphItem)
+	graphItem.addexpr(tstr1,3,1)
+	
+	sprint(tstr1,"%s.soma.v",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Voltage (%s)",$s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc Plot1VRed() {
+	sprint(tstr1,"%s.soma.v(.5)",$s1)
+	newPlot(0,tstop,-80,60)
+	graphItem.save_name("graphList[0].")
+	graphList[0].append(graphItem)
+	graphItem.addexpr(tstr1,2,1)
+	
+	sprint(tstr1,"%s.soma.v",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Voltage (%s)",$s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc Plot1VAxon() {
+	sprint(tstr1,"%s.axon.v(.5)",$s1)
+	newPlot(0,tstop,-80,60)
+	graphItem.save_name("graphList[0].")
+	graphList[0].append(graphItem)
+	graphItem.addexpr(tstr1,3,1)
+	
+	sprint(tstr1,"%s.soma.v",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Voltage (%s)",$s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+
+proc Plot2V() {
+	sprint(tstr1,"%s.soma.v(.5)",$s1)
+	sprint(tstr2,"%s.soma.v(.5)",$s2)
+	newPlot(0,tstop,-80,60)
+	graphItem.save_name("graphList[0].")
+	graphList[0].append(graphItem)
+	graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	
+}
+
+proc Plot2VAxon() {
+	sprint(tstr1,"%s.axon.v(.5)",$s1)
+	sprint(tstr2,"%s.axon.v(.5)",$s2)
+	newPlot(0,tstop,-80,60)
+	graphItem.save_name("graphList[0].")
+	graphList[0].append(graphItem)
+	graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	
+}
+
+proc Plot1CaPool() {
+	sprint(tstr1,"%s.soma.cai(.5)",$s1)
+	newPlot(0,tstop,0,.4)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr1,3,1)
+	
+	sprint(tstr1,"%s.soma.cai",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Calcium Pool (%s)",$s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc newPlotConductances() {
+	sprint(tstr1,"%s.soma.gbar_na", $s1)
+	sprint(tstr2,"%s.soma.gbar_kdr", $s1)
+	newPlot(0,tstop,-.005,.025)
+	graphItem.save_name("graphList[1].")
+	graphList[1].append(graphItem)
+	graphItem.addexpr(tstr1,3,2)
+	graphItem.addexpr(tstr2,2,2)
+	sprint(tstr,"tstr1 = units(&%s)",tstr1)
+	execute(tstr)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotINaK() { 
+	sprint(tstr0,"%s.soma.ileak_leak(.5)",$s1)
+	sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr1,"%s.soma.ina_na",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotINaKAxon() { 
+	sprint(tstr0,"%s.axon.ileak_leak(.5)",$s1)
+	sprint(tstr1,"%s.axon.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.axon.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr1,"%s.axon.ina_na",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotIKCA() { 
+	sprint(tstr1,"%s.soma.ik_kca(.5)",$s1)
+	newPlot(0,tstop,0,.02)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr1,4,1)
+	
+	sprint(tstr1,"%s.soma.ik_kca",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+
+
+proc PlotIBurstingSoma() { 
+
+	
+	sprint(tstr0,"%s.soma.ileak_leak(.5)",$s1)
+	//sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	//graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr1,"%s.soma.ica_cas(.5)",$s1)
+	sprint(tstr2,"%s.soma.ica_cat(.5)",$s1)
+	graphItem.addexpr(tstr1,5,1)
+	graphItem.addexpr(tstr2,6,1)
+	
+	sprint(tstr1,"%s.soma.ik_ka(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kca(.5)",$s1)
+	graphItem.addexpr(tstr1,7,1)
+	graphItem.addexpr(tstr2,4,1)
+	
+	
+	sprint(tstr1,"%s.soma.ik_kdr",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotIBurstingSomaSingle() { 
+
+	
+	sprint(tstr0,"%s.soma.ileak_leak(.5)",$s1)
+	//sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	//graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr1,"%s.soma.ica_cas(.5)",$s1)
+	sprint(tstr2,"%s.soma.ica_cat(.5)",$s1)
+	graphItem.addexpr(tstr1,5,1)
+	graphItem.addexpr(tstr2,6,1)
+	
+	sprint(tstr1,"%s.soma.ik_ka(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kca(.5)",$s1)
+	graphItem.addexpr(tstr1,7,1)
+	graphItem.addexpr(tstr2,4,1)
+	
+	sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	graphItem.addexpr(tstr1,8,1)
+	
+	
+	sprint(tstr1,"%s.soma.ik_kdr",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotIBurstingSomaWithH() { 
+
+	
+	sprint(tstr0,"%s.soma.ileak_leak(.5)",$s1)
+	//sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	//graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr2,"%s.soma.ih_hyper(.5)",$s1)
+	graphItem.addexpr(tstr2,9,1)
+	
+	sprint(tstr1,"%s.soma.ica_cas(.5)",$s1)
+	sprint(tstr2,"%s.soma.ica_cat(.5)",$s1)
+	graphItem.addexpr(tstr1,5,1)
+	graphItem.addexpr(tstr2,6,1)
+	
+	sprint(tstr1,"%s.soma.ik_ka(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kca(.5)",$s1)
+	graphItem.addexpr(tstr1,7,1)
+	graphItem.addexpr(tstr2,4,1)
+	
+	sprint(tstr1,"%s.soma.ik_kdr",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+proc PlotIBurstingSomaWithHSingle() { 
+
+	
+	sprint(tstr0,"%s.soma.ileak_leak(.5)",$s1)
+	//sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kdr(.5)",$s1)
+	newPlot(0,tstop,-2,2)
+	graphItem.save_name("graphList[2].")
+	graphList[2].append(graphItem)
+	graphItem.addexpr(tstr0,1,1)
+	//graphItem.addexpr(tstr1,3,1)
+	graphItem.addexpr(tstr2,2,1)
+	
+	sprint(tstr2,"%s.soma.ih_hyper(.5)",$s1)
+	graphItem.addexpr(tstr2,9,1)
+	
+	sprint(tstr1,"%s.soma.ica_cas(.5)",$s1)
+	sprint(tstr2,"%s.soma.ica_cat(.5)",$s1)
+	graphItem.addexpr(tstr1,5,1)
+	graphItem.addexpr(tstr2,6,1)
+	
+	sprint(tstr1,"%s.soma.ik_ka(.5)",$s1)
+	sprint(tstr2,"%s.soma.ik_kca(.5)",$s1)
+	graphItem.addexpr(tstr1,7,1)
+	graphItem.addexpr(tstr2,4,1)
+	
+	
+	sprint(tstr1,"%s.soma.ina_na(.5)",$s1)
+	graphItem.addexpr(tstr1,8,1)
+	
+	sprint(tstr1,"%s.soma.ik_kdr",$s1)
+	sprint(tstr2,"tstr3 = units(&%s)",tstr1)
+	execute(tstr2)
+	sprint(tstr1, "%s Current (%s)", $s1, tstr3)
+	graphItem.label(.08,.925,tstr1)
+}
+
+//MainHBoxObj ->SubVBoxObj ->SubDeckObj
+proc allInOneBoxSpiking() { local i
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Spiking Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotINaK($s1)
+		//PlotIKCA($s1)
+		//Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		nrnpointmenu($o3)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,1000,600)
+}
+
+proc allInOneBoxAdaptation() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Adaptation Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotINaK($s1)
+		PlotIKCA($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		nrnpointmenu($o3)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,1000,600)
+}
+
+proc allInOneBoxBursting() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Bursting Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSoma($s1)
+		Plot1VAxon($s1)
+		PlotINaKAxon($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+		$o2.axon nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		nrnpointmenu($o3)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,1000,600)
+}
+
+proc allInOneBoxBurstingSingle() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Bursting Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaSingle($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		nrnpointmenu($o3)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,1000,600)
+}
+
+proc allInOneBoxSomaSynapse() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Soma-Synapse Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSoma($s1)
+		Plot1VAxon($s1)
+		PlotINaKAxon($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+		$o2.axon nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		//nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+}
+
+proc allInOneBoxSomaSynapseSingle() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Soma-Synapse Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaSingle($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		//nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+}
+
+proc allInOneBoxSingleHCO() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Single HCO Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaWithH($s1)
+		Plot1VAxon($s1)
+		PlotINaKAxon($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+		$o2.axon nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		//nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+}
+
+proc allInOneBoxSingleHCOSingle() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Single HCO Neuron)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	SubDeckObj[0].intercept(1)
+		xpanel(" ")
+			xlabel("----PLOTS IN THE LEFT PANEL----")
+		xpanel(0)
+	SubDeckObj[0].intercept(0)
+	SubDeckObj[1].intercept(1)
+		
+	SubDeckObj[1].intercept(0)
+	//////// SubVBoxes ////////
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaWithHSingle($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	SubVBoxObj[1].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	SubVBoxObj[1].intercept(0)
+	
+	SubVBoxObj[2].intercept(1)
+		nrncontrolmenu()
+		//nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+}
+
+
+strdef ControlMainBoxTitle
+ControlMainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Control Panel)"
+ControlSubVBoxNum = 3
+ControlSubDeckNum = 2
+objref ControlMainHBoxObj,ControlSubVBoxObj[ControlSubVBoxNum]
+objref Control[ControlSubDeckNum]
+
+//allInOneBoxHCO("CellA", CellA, ccl, syn[0],"CellB", CellB, syn[1])
+//               $s1,     $o2,    $o3, $o4,  $s5,    $o6,   $o7
+
+proc allInOneBoxHCO() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Two Cell Half Center Oscillator)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	ControlMainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Control Panel)"
+	ControlMainHBoxObj = new HBox()
+	for i=0,ControlSubVBoxNum-1 ControlSubVBoxObj[i] = new VBox()
+	
+	
+	//Controls
+	//Left Side
+	ControlSubVBoxObj[0].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+		$o2.axon nrnsecmenu(.5,1)
+	ControlSubVBoxObj[0].intercept(0)
+	
+	//Middle	
+	ControlSubVBoxObj[1].intercept(1)
+		nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o7)
+	ControlSubVBoxObj[1].intercept(0)
+	
+	//Right Side
+	ControlSubVBoxObj[2].intercept(1)
+		$o6.soma nrnsecmenu(.5,1)
+		$o6.axon nrnsecmenu(.5,1)
+	ControlSubVBoxObj[2].intercept(0)
+	
+	ControlMainHBoxObj.intercept(1)
+		for i=0,ControlSubVBoxNum-1 ControlSubVBoxObj[i].map()
+	ControlMainHBoxObj.intercept(0)
+	ControlMainHBoxObj.map(ControlMainBoxTitle,0,0,900,700)
+	
+	
+	//Main Graphs Panel
+	
+	//////// SubVBoxes ////////
+	//Left Side
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaWithH($s1)
+		Plot1VAxon($s1)
+		PlotINaKAxon($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	//Middle
+	SubVBoxObj[1].intercept(1)
+		Plot2V($s1,$s5)
+		Plot2VAxon($s1,$s5)
+		nrncontrolmenu()		
+	SubVBoxObj[1].intercept(0)
+	
+	//Right side
+	SubVBoxObj[2].intercept(1)
+		Plot1V($s5)
+		PlotIBurstingSomaWithH($s5)
+		Plot1VAxon($s5)
+		PlotINaKAxon($s5)
+		Plot1CaPool($s5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+	
+	
+	
+}
+
+
+proc allInOneBoxHCOSingle() { local i
+
+	MainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Two Cell Half Center Oscillator)"
+	MainHBoxObj = new HBox()
+	for i=0,SubVBoxNum-1 SubVBoxObj[i] = new VBox()
+	for i=0,SubDeckNum-1 SubDeckObj[i] = new Deck()
+	
+	ControlMainBoxTitle = "Tyler Banks - Computational Neuroscience Modeling Project (Control Panel)"
+	ControlMainHBoxObj = new HBox()
+	for i=0,ControlSubVBoxNum-1 ControlSubVBoxObj[i] = new VBox()
+	
+	
+	//Controls
+	//Left Side
+	ControlSubVBoxObj[0].intercept(1)
+		$o2.soma nrnsecmenu(.5,1)
+	ControlSubVBoxObj[0].intercept(0)
+	
+	//Middle	
+	ControlSubVBoxObj[1].intercept(1)
+		nrnpointmenu($o3)
+		nrnpointmenu($o4)
+		nrnpointmenu($o7)
+	ControlSubVBoxObj[1].intercept(0)
+	
+	//Right Side
+	ControlSubVBoxObj[2].intercept(1)
+		$o6.soma nrnsecmenu(.5,1)
+	ControlSubVBoxObj[2].intercept(0)
+	
+	ControlMainHBoxObj.intercept(1)
+		for i=0,ControlSubVBoxNum-1 ControlSubVBoxObj[i].map()
+	ControlMainHBoxObj.intercept(0)
+	ControlMainHBoxObj.map(ControlMainBoxTitle,0,0,900,700)
+	
+	
+	//Main Graphs Panel
+	
+	//////// SubVBoxes ////////
+	//Left Side
+	SubVBoxObj[0].intercept(1)
+		Plot1V($s1)
+		PlotIBurstingSomaWithHSingle($s1)
+		Plot1CaPool($s1)
+		//SubDeckObj[0].map()
+		//SubDeckObj[0].flip_to(0)
+	SubVBoxObj[0].intercept(0)
+	
+	//Middle
+	SubVBoxObj[1].intercept(1)
+		Plot2V($s1,$s5)
+		nrncontrolmenu()		
+	SubVBoxObj[1].intercept(0)
+	
+	//Right side
+	SubVBoxObj[2].intercept(1)
+		Plot1VRed($s5)
+		PlotIBurstingSomaWithHSingle($s5)
+		Plot1CaPool($s5)
+	SubVBoxObj[2].intercept(0)
+	
+	MainHBoxObj.intercept(1)
+		for i=0,SubVBoxNum-1 SubVBoxObj[i].map()
+	MainHBoxObj.intercept(0)
+	MainHBoxObj.map(MainBoxTitle,0,0,900,700)
+	
+	
+	
+}
